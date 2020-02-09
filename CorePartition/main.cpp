@@ -72,6 +72,7 @@ unsigned int addOne (unsigned int nValue)
     return nValue;
 }
 
+
 void Thread1 (void* pValue)
 {
     unsigned int nValue = 0;
@@ -100,7 +101,7 @@ void Thread2 (void* pValue)
         
         printf ("## %lu:  Value: [%u] - Returning\n", CorePartition_GetID(), nValue);
         
-        CorePartition_Sleep (400);
+        //CorePartition_Sleep (400);
     }
 }
 
@@ -149,9 +150,9 @@ int main(int argc, const char * argv[])
     CorePartition_SetSleepTimeInterface (sleepMSTicks);
     CorePartition_SetStackOverflowHandler (StackOverflowHandler);
     
-    CorePartition_CreateThread (Thread1, NULL, 256, 3000);
-    CorePartition_CreateThread (Thread2, NULL, 256, 1000);
-    CorePartition_CreateThread (Thread3, NULL, 256, 500);
+    CorePartition_CreateThread (Thread1, NULL, 256, 1000);
+    CorePartition_CreateThread (Thread2, NULL, 256, 500);
+    CorePartition_CreateThread (Thread3, NULL, 256, 300);
     
     CorePartition_Join();
     

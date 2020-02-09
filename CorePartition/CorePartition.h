@@ -50,7 +50,7 @@ extern "C"{
 #define THREADL_START       1
 #define THREADL_RUNNING     2
 #define THREADL_SLEEP       3
-#define THREADL_STOPPED     4
+#define THREADL_OVERFLOW    4
 
     
     static const char CorePartition_version[] = "V2.3.2 Compiled at " __TIMESTAMP__;

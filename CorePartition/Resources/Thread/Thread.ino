@@ -298,7 +298,6 @@ void Thread1 (void* pValue)
 
     TextScroller textScroller (15, 8);
 
-    
     while (CorePartition_Yield ())
     {
         setColor (1, 0);
@@ -353,6 +352,25 @@ void Thread3 (void* pValue)
     }
 }
 
+
+void Thread_Eventual (void* pValue)
+{
+    uint32_t nTime = millis ();
+    
+    for (int nValue = 1; nValue < 5; nValue++, CorePartition_Yield ())
+    {
+        setLocation (45,10 + ((CorePartition_GetID () - 5) * 30));
+        Serial.print (CorePartition_GetID ());
+        Serial.print (" Counter: ");
+        Serial.print (nValue);
+        Serial.print (", Time: ");
+        Serial.print (millis() - nTime); nTime = millis ();
+        Serial.println (" ms   ");
+        Serial.flush ();
+    }
+}
+
+
 void Thread4 (void* pValue)
 {
     size_t nValue = 100;
@@ -370,6 +388,11 @@ void Thread4 (void* pValue)
         resetColor ();
         
         Serial.flush ();
+        
+        nValue++;
+        
+        if (nValue % 4 == 0)
+            CorePartition_CreateThread (Thread_Eventual, 10, 10 * sizeof (size_t), 200);
     }
 }
 
@@ -404,13 +427,8 @@ void setup()
 {
     //Initialize serial and wait for port to open:
     Serial.begin(115200);
-
-    delay (1000);
     
     while (!Serial);
-
-    
-    delay (1000);
    
     setLocation (1,1);
     resetColor ();
@@ -442,7 +460,7 @@ void setup()
     //Thread1 ();
 
 
-    CorePartition_Start(5);
+    CorePartition_Start(10);
     
     CorePartition_SetCurrentTimeInterface(getTimeTick);
     CorePartition_SetSleepTimeInterface(sleepTick);
@@ -451,15 +469,15 @@ void setup()
     
     
     
-    CorePartition_CreateThread (Thread1, NULL, 20 * sizeof (size_t), 0);
+    CorePartition_CreateThread (Thread1, NULL, 20 * sizeof (size_t), 100);
 
-    CorePartition_CreateThread (Thread2, NULL, 30 * sizeof (size_t), 0);
+    CorePartition_CreateThread (Thread2, NULL, 30 * sizeof (size_t), 100);
     
     CorePartition_CreateThread (Thread3, NULL, 25 * sizeof (size_t), 1000);
     
     CorePartition_CreateThread (Thread4, NULL, 25 * sizeof (size_t), 500);
 
-    CorePartition_CreateThread (ThreadTOP, NULL, 7 * sizeof (size_t), 0);
+    CorePartition_CreateThread (ThreadTOP, NULL, 10 * sizeof (size_t), 50);
 
 }
 
