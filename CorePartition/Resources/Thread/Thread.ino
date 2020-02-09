@@ -392,7 +392,7 @@ void Thread4 (void* pValue)
         nValue++;
         
         if (nValue % 4 == 0)
-            CorePartition_CreateThread (Thread_Eventual, 10, 10 * sizeof (size_t), 200);
+            CorePartition_CreateThread (Thread_Eventual, (void*) 10, 10 * sizeof (size_t), 200);
     }
 }
 
@@ -460,7 +460,7 @@ void setup()
     //Thread1 ();
 
 
-    CorePartition_Start(10);
+    CorePartition_Start(5);
     
     CorePartition_SetCurrentTimeInterface(getTimeTick);
     CorePartition_SetSleepTimeInterface(sleepTick);
@@ -473,11 +473,11 @@ void setup()
 
     CorePartition_CreateThread (Thread2, NULL, 30 * sizeof (size_t), 100);
     
-    CorePartition_CreateThread (Thread3, NULL, 25 * sizeof (size_t), 1000);
+    //CorePartition_CreateThread (Thread3, NULL, 25 * sizeof (size_t), 1000);
     
-    CorePartition_CreateThread (Thread4, NULL, 25 * sizeof (size_t), 500);
+    //CorePartition_CreateThread (Thread4, NULL, 25 * sizeof (size_t), 500);
 
-    CorePartition_CreateThread (ThreadTOP, NULL, 10 * sizeof (size_t), 50);
+    //CorePartition_CreateThread (ThreadTOP, NULL, 10 * sizeof (size_t), 50);
 
 }
 
